@@ -19,10 +19,17 @@ merged_data['Age_60+'] = (merged_data['AGE'] >= 60).astype(int)
 # Step 5: Drop the original 'AGE' column
 merged_data = merged_data.drop('AGE', axis=1)
 
-# Step 6: Reduce the number of rows to 1000
+# Step 6: Convert specified columns to 0 and 1
+convert_to_binary_columns = ['SEX', 'PATIENT_TYPE', 'DIABETES', 'ASTHMA', 'OBESITY', 'TOBACCO', 
+                              'HAS_COVID', 'Age_0-9', 'Age_10-19', 'Age_20-24', 'Age_25-59', 'Age_60+']
+
+# Map values to 0 and 1
+merged_data[convert_to_binary_columns] = merged_data[convert_to_binary_columns].replace({2: 0, 1: 1})
+
+# Step 7: Reduce the number of rows to 1000
 merged_data = merged_data.sample(n=1000, random_state=42)
 
-# Step 7: Remove specified columns
+# Step 8: Remove specified columns
 remove_columns = ['USMER', 'MEDICAL_UNIT', 'DATE_DIED', 'INTUBED', 'PNEUMONIA', 'PREGNANT', 
                   'COPD', 'INMSUPR', 'HIPERTENSION', 'OTHER_DISEASE', 'CARDIOVASCULAR', 
                   'RENAL_CHRONIC', 'ICU']
@@ -31,5 +38,5 @@ merged_data = merged_data.drop(remove_columns, axis=1)
 # Print sample data to verify the changes
 print(merged_data.head())
 
-# Step 8: Save the modified dataset if needed
+# Step 9: Save the modified dataset if needed
 merged_data.to_csv("Covid Data UPDATED.csv", index=False)  # Replace with the desired file path
