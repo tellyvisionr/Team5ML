@@ -1,0 +1,17 @@
+import pandas as pd
+
+# Load the two CSV files
+symptom_data = pd.read_csv("Covid 19 symptoms data UPDATED.csv")
+covid_data = pd.read_csv("Covid Data UPDATED.csv")
+
+# Select the common identifiers
+common_identifiers = ['Age_0-9', 'Age_10-19', 'Age_20-24', 'Age_25-59', 'Age_60+', 'SEX']
+
+# Merge the two datasets using the common identifiers
+merged_data = pd.merge(symptom_data, covid_data, on=common_identifiers)
+
+# Rename the column "None_Sympton" to "None_Symptom"
+merged_data = merged_data.rename(columns={'None_Sympton': 'None_Symptom'})
+
+# Save the merged data to a new CSV file
+merged_data.to_csv("merged_data.csv", index=False)
